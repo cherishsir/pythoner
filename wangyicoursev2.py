@@ -7,7 +7,7 @@ import sys
 def printall(end,titlelist):
 	print "你将下载的视频如下:"
 	for i in range(0,end):
-		print titlelist[i]
+		print str(i+1),titlelist[i]
 	raw_input("按下任意键,开始下载")
 	
 
@@ -15,14 +15,15 @@ def getstart(alist):
 	i=0
 	first=alist[i]
 	while first=="None":
-		#print "haha"
+		print "haha"
 		i+=1
 		first=alist[i]
 	newlist=[]
-	b=0
-	for i in range(1,len(alist)):
+	b=i
+	for i in range(b+1,len(alist)):
 		if first==alist[i]:
 			break
+	print i
 	for a in range(i,len(alist)):
 		#print "*inside getstart*",alist[a]
 		newlist.append(alist[a])
@@ -107,7 +108,6 @@ if __name__=="__main__":
 #去掉重复的url and title,返回值为没有重复的url and title
 	mp4list=getstart(mp4list)
 	titlelist=getstart(titlelist)
-
 #下载对应的内容,通过mp4list找下载对应的视频，mp4list的len决定了视频的数量
 	printall(len(mp4list),titlelist)
 	downloadopen(0,mp4list,titlelist)
