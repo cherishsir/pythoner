@@ -109,6 +109,7 @@ def downloadopen(start,urllist,titlelist):
 			print filename,"已经存在,skipping"
 			number+=1
 		i+=1
+		falied=0
 
 
 ##main function###########################################################
