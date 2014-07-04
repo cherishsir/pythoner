@@ -66,34 +66,49 @@ def download(start,urllist,titlelist):
 
 def downloadopen(start,urllist,titlelist):
 	number=1
-	for i in range(start,len(urllist)):
+	i=start
+	failed=0
+	while i<len(urllist):
 		where="第"+str(number)+"课"
 		filename=where+str(titlelist[i])+".mp4"
 		if not os.path.isfile(filename): # do not have this file in local    
 		        CHUNK=1024*1024
-			req=urlopen(urllist[i])
-			size=int(req.info()["Content-Length"])
-			ALL=size/CHUNK+1
-			now=0
-			print "下载中 "+filename+"["+str(size/1000/1000)+"MB]"
-			with open(filename,"wb") as fp:
-			   while True:
-				condition=float(now)*100/ALL
-				if condition >100:
-					condition=100
-				print "\033[91m\r[%"+str(condition)+"]"+str(now)+"MB\033[0m",
-				sys.stdout.flush()
-				chunk=req.read(CHUNK)
-				if not chunk: break
-				fp.write(chunk)
-				now+=1
-				
-			   print "\n"
-			number+=1
+			try:
+				req=urlopen(urllist[i],None,10)
+				size=int(req.info()["Content-Length"])
+				ALL=size/CHUNK
+				now=0
+				print "下载中 "+filename+"["+str(size/1000/1000)+"MB]"
+				with open(filename,"wb") as fp:
+				   while True:
+					condition=float(now)*100/ALL
+					condition=float('%4.1f'% condition)
+					if condition >100:
+						condition=100
+						now=size/1000/1000
+					print "\r"+" "*20,
+					print "\033[91m\r[%"+str(condition)+"]"+str(now)+"MB\033[0m/"+"["+str(size/1000/1000)+"MB]",
+					sys.stdout.flush()
+					chunk=req.read(CHUNK)
+					if not chunk: break
+					fp.write(chunk)
+					now+=1
+				   print "\n"
+				number+=1
+			except  Exception,e:
+				print e
+				os.system("rm -rf  "+filename)
+				number+=1
+				if failed<10:
+					failed+=1
+					print "下载失败："+filename+"尝试10次:"+str(failed)
+					i-=1	
+					number-=1		
 		
 		else:
 			print filename,"已经存在,skipping"
 			number+=1
+		i+=1
 
 
 ##main function###########################################################
