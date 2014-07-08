@@ -70,18 +70,19 @@ def download(start,urllist,titlelist):
 			number+=1
 
 def dlone(url,filename):
+    timeout=200 #200s
     if  os.path.isfile(filename):
         print filename+" existed,skipping"
         return
     else:
         CHUNK=1000*1000
         try:
-            req=urlopen(url,None,10)
+            req=urlopen(url,None,timeout)
             size=int(req.info()["Content-Length"])
             typefile=req.info()["Content-Type"]
             all=size/1000#kB
             now=0
-            print filename+REDSTART+" 下载中"+REDEND,"\t",
+            print filename+REDSTART+" 下载中"+REDEND
             with open(filename,"wb") as fp:
                 while True:
                     condition=float(now)*100*CHUNK/size
