@@ -10,7 +10,7 @@ python wang-get.py urllist
 ```
 python wylist.py urllist
 ```
-
+####依赖包：BeautifulSoup
 ###you-get是个非常强大音视频下载的脚本集合，github页面如下
 https://github.com/soimort/you-get
 
